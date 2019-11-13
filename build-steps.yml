@@ -32,6 +32,7 @@ steps:
             Write-Host "##vso[task.setvariable variable=$($node.Name)Version][$($node.InnerText)-*,$($node.InnerText)]" 
           }
       }
+      Write-Host "##vso[task.setvariable variable=PackageOutputPath]${{ parameters['PackageOutputPath'] }}" 
 
 - task: NuGetCommand@2
   displayName: 'Restore'
