@@ -53,14 +53,14 @@ steps:
 - task: VSTest@2
   displayName: 'Test'
   inputs:
-    platform: ${{ parameters['buildPlatform'] }}
-    configuration: ${{ parameters['buildConfiguration'] }}
+    platform: ${{ parameters.buildPlatform }}
+    configuration: ${{ parameters.buildConfiguration }}
     searchFolder: '$(system.defaultworkingdirectory)\tests'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Stage Binaries'
   inputs:
-    PathtoPublish: ${{ format('src\bin\{0}', parameters['buildConfiguration']) }}
+    PathtoPublish: ${{ format('src\bin\{0}', parameters.buildConfiguration) }}
     artifactName: 'Binaries'
 
 - task: PublishBuildArtifacts@1
