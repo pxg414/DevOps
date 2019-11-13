@@ -16,20 +16,20 @@ steps:
     targetType: 'inline'
     script: |
       $version = (Select-Xml -Path ${{ parameters.properties }} -XPath "/Project/PropertyGroup/Version" | Select-Object -ExpandProperty Node).InnerText
-      $list = Select-Xml -Path ${{ parameters.properties }} -XPath "/Project/PropertyGroup/*[starts-with(local-name(),'Unity')]"  | Select-Object -ExpandProperty Node
+      $list = Select-Xml -Path ${{ parameters.properties }} -XPath "/Project/PropertyGroup/*[starts-with(local-name(),'PreUnity')]"  | Select-Object -ExpandProperty Node
       $timestamp = git log -1 --pretty="format:%ct"
       Write-Host "Version: $version" 
       if ([regex]::IsMatch($Env:BUILD_SOURCEBRANCH, "^(refs\/tags\/v)")) { 
           Write-Host "Package Version: $($version)" 
           foreach ($node in $list) { 
-            Write-Host "References $($node.Name) $($node.InnerText)" 
+            Write-Host "References $($node.Name.Substring(3)) $($node.InnerText)" 
           }
       } Else { 
           Write-Host "Package Version: $($version)-$($timestamp)" 
           Write-Host "##vso[task.setvariable variable=VERSION_SUFFIX]-$($timestamp)" 
           foreach ($node in $list) { 
-            Write-Host "References $($node.Name) [$($node.InnerText)-*,$($node.InnerText)]" 
-            Write-Host "##vso[task.setvariable variable=$($node.Name)Version][$($node.InnerText)-*,$($node.InnerText)]" 
+            Write-Host "References $($node.Name.Substring(3)) $($node.InnerText)" 
+            Write-Host "##vso[task.setvariable variable=$($node.Name.Substring(3))Version]$($node.InnerText)" 
           }
       }
       Write-Host "##vso[task.setvariable variable=PackageOutputPath]${{ parameters['PackageOutputPath'] }}" 
