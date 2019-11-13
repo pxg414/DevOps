@@ -55,7 +55,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Stage Binaries'
   inputs:
-    PathtoPublish: 'src\bin\${{ parameters['buildConfiguration'] }}'
+    PathtoPublish: ${{ format('src\bin\{0}', parameters['buildConfiguration']) }}
     artifactName: 'Binaries'
 
 - task: PublishBuildArtifacts@1
