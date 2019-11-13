@@ -21,6 +21,9 @@ steps:
       Write-Host "Version: $version" 
       if ([regex]::IsMatch($Env:BUILD_SOURCEBRANCH, "^(refs\/tags\/v)")) { 
           Write-Host "Package Version: $($version)" 
+          foreach ($node in $list) { 
+            Write-Host "References $($node.Name) $($node.InnerText)" 
+          }
       } Else { 
           Write-Host "Package Version: $($version)-$($timestamp)" 
           Write-Host "##vso[task.setvariable variable=VERSION_SUFFIX]-$($timestamp)" 
