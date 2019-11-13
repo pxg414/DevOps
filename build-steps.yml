@@ -33,7 +33,7 @@ steps:
   displayName: 'Restore'
   inputs:
     command: 'restore'
-    restoreSolution: '${{ parameters['solution'] }}'
+    restoreSolution: ${{ parameters['solution'] }}
     feedsToUse: 'select'
     vstsFeed: '18a6243f-7dac-4c78-bb92-3af88cd8e255'
     verbosityRestore: 'Normal'
@@ -41,15 +41,15 @@ steps:
 - task: VSBuild@1
   displayName: 'Build'
   inputs:
-    solution: '${{ parameters['solution'] }}'
-    platform: '${{ parameters['buildPlatform'] }}'
-    configuration: '${{ parameters['buildConfiguration'] }}'
+    solution: ${{ parameters['solution'] }}
+    platform: ${{ parameters['buildPlatform'] }}
+    configuration: ${{ parameters['buildConfiguration'] }}
 
 - task: VSTest@2
   displayName: 'Test'
   inputs:
-    platform: '${{ parameters['buildPlatform'] }}'
-    configuration: '${{ parameters['buildConfiguration'] }}'
+    platform: ${{ parameters['buildPlatform'] }}
+    configuration: ${{ parameters['buildConfiguration'] }}
     searchFolder: '$(system.defaultworkingdirectory)\tests'
 
 - task: PublishBuildArtifacts@1
