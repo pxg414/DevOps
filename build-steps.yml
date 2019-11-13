@@ -1,5 +1,5 @@
 parameters:
-  solution: '**/*.csproj'
+  solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   PackageOutputPath: '$(build.artifactstagingdirectory)\Package'
