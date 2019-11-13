@@ -1,11 +1,3 @@
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-  PackageOutputPath: '$(build.artifactstagingdirectory)\Package'
-  propsFile: '.\Directory.Build.props'
-
-steps:
 - task: PowerShell@2
   displayName: 'Version Info'
   inputs:
