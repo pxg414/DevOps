@@ -25,12 +25,14 @@ steps:
       
       if ([regex]::IsMatch($Env:BUILD_SOURCEBRANCH, "^(refs\/tags\/v)")) { 
           Write-Host "Package Version: $($version)" 
-          foreach ($node in $list) { Write-Host "References Unity.$($node.Name.Substring(8)) $($node.InnerText)" }
+          Write-Host "References:" 
+          foreach ($node in $list) { Write-Host "   Unity.$($node.Name.Substring(8)) $($node.InnerText)" }
       } Else { 
           Write-Host "Package Version: $($version)-$($timestamp)" 
           Write-Host "##vso[task.setvariable variable=VERSION_SUFFIX]-$($timestamp)" 
+          Write-Host "References:" 
           foreach ($node in $list) { 
-            Write-Host "References Unity.$($node.Name.Substring(8)) $($node.InnerText)" 
+            Write-Host "    Unity.$($node.Name.Substring(8)) $($node.InnerText)" 
             Write-Host "##vso[task.setvariable variable=$($node.Name.Substring(3))Version]$($node.InnerText)" 
           }
       }
