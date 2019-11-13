@@ -11,19 +11,21 @@ steps:
   displayName: 'Install NuGet'
 
 - task: PowerShell@2
-  displayName: 'Version Info'
+  displayName: 'Set References'
   inputs:
     targetType: 'inline'
     script: |
+      Write-Host "##vso[task.setvariable variable=PackageOutputPath]${{ parameters['PackageOutputPath'] }}" 
+      
       $version = (Select-Xml -Path ${{ parameters.properties }} -XPath "/Project/PropertyGroup/Version" | Select-Object -ExpandProperty Node).InnerText
-      $list = Select-Xml -Path ${{ parameters.properties }} -XPath "/Project/PropertyGroup/*[starts-with(local-name(),'PreUnity')]"  | Select-Object -ExpandProperty Node
-      $timestamp = git log -1 --pretty="format:%ct"
       Write-Host "Version: $version" 
+      
+      $timestamp = git log -1 --pretty="format:%ct"
+      $list = Select-Xml -Path ${{ parameters.properties }} -XPath "/Project/PropertyGroup/*[starts-with(local-name(),'PreUnity')]"  | Select-Object -ExpandProperty Node
+      
       if ([regex]::IsMatch($Env:BUILD_SOURCEBRANCH, "^(refs\/tags\/v)")) { 
           Write-Host "Package Version: $($version)" 
-          foreach ($node in $list) { 
-            Write-Host "References Unity.$($node.Name.Substring(8)) $($node.InnerText)" 
-          }
+          foreach ($node in $list) { Write-Host "References Unity.$($node.Name.Substring(8)) $($node.InnerText)" }
       } Else { 
           Write-Host "Package Version: $($version)-$($timestamp)" 
           Write-Host "##vso[task.setvariable variable=VERSION_SUFFIX]-$($timestamp)" 
@@ -32,7 +34,6 @@ steps:
             Write-Host "##vso[task.setvariable variable=$($node.Name.Substring(3))Version]$($node.InnerText)" 
           }
       }
-      Write-Host "##vso[task.setvariable variable=PackageOutputPath]${{ parameters['PackageOutputPath'] }}" 
 
 - task: NuGetCommand@2
   displayName: 'Restore'
