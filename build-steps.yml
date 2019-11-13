@@ -6,6 +6,10 @@ parameters:
   propsFile: '.\Directory.Build.props'
 
 steps:
+
+- task: NuGetToolInstaller@1
+  displayName: 'Install NuGet'
+
 - task: PowerShell@2
   displayName: 'Version Info'
   inputs:
@@ -25,9 +29,6 @@ steps:
             Write-Host "##vso[task.setvariable variable=$($node.Name)Version][$($node.InnerText)-*,$($node.InnerText)]" 
           }
       }
-
-- task: NuGetToolInstaller@1
-  displayName: 'Install NuGet'
 
 - task: NuGetCommand@2
   displayName: 'Restore'
