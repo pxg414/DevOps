@@ -1,2 +1,7 @@
+parameters:
+  variables: {}
+
+
 variables:
   favoriteVeggie: 'brussels sprouts'
+  ${{ insert }}: ${{ parameters.variables }}
